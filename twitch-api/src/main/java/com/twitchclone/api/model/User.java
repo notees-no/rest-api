@@ -5,6 +5,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import com.twitchclone.api.enums.UserRole;
 
 @Entity
 @Table(name = "users")
@@ -16,13 +17,15 @@ public class User extends AbstractModels {
 
     private String username;
     private String password;
+    private UserRole role; 
 
     public User() {
     }
 
-    public User(String username, String password) {
+    public User(String username, String password, UserRole role) {
         this.username = username;
         this.password = password;
+        this.role = role;
     }
 
     public Long getId() {
@@ -47,5 +50,13 @@ public class User extends AbstractModels {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public UserRole getRole() {
+        return role; 
+    }
+
+    public void setRole(UserRole role) {
+        this.role = role;
     }
 }
