@@ -25,7 +25,8 @@ public class SubscriptionController {
 
     @PutMapping("/{id}")
     @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
-    public ResponseEntity<Subscription> updateSubscription(@PathVariable Long id, @RequestBody Subscription subscription) {
+    public ResponseEntity<Subscription> updateSubscription(@PathVariable Long id,
+            @RequestBody Subscription subscription) {
         subscription.setId(id);
         Subscription updatedSubscription = subscriptionService.update(subscription);
         return ResponseEntity.ok(updatedSubscription);

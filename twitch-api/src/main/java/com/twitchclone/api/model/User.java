@@ -13,11 +13,11 @@ public class User extends AbstractModels {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id; 
+    private Long id;
 
     private String username;
     private String password;
-    private UserRole role; 
+    private UserRole role;
 
     public User() {
     }
@@ -29,11 +29,11 @@ public class User extends AbstractModels {
     }
 
     public Long getId() {
-        return id; 
+        return id;
     }
 
     public void setId(Long id) {
-        this.id = id; 
+        this.id = id;
     }
 
     public String getUsername() {
@@ -53,7 +53,7 @@ public class User extends AbstractModels {
     }
 
     public UserRole getRole() {
-        return role; 
+        return role;
     }
 
     public void setRole(UserRole role) {
