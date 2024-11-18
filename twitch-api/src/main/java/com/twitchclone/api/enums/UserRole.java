@@ -1,7 +1,7 @@
 package com.twitchclone.api.enums;
 
 public enum UserRole {
-    GUEST,
-    USER,
-    ADMIN
+    ROLE_GUEST,
+    ROLE_USER,
+    ROLE_ADMIN
 }
