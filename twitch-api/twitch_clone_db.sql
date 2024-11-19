@@ -31,9 +31,9 @@ CREATE TABLE IF NOT EXISTS subscriptions (
 );
 
 -- Вставка тестовых данных в таблицу users
-INSERT INTO users (username, password, role) VALUES ('admin', '123', 'ADMIN');
-INSERT INTO users (username, password, role) VALUES ('user', '123', 'USER');
-INSERT INTO users (username, password, role) VALUES ('1', '1', 'ADMIN');
+INSERT INTO users (username, password, role) VALUES ('admin', '$2a$10$GodGagCxOuBdo9mKqrzEA.aaojW8m0DSSfnV5ZpYVMSaD/AdsRePa', 'ADMIN');
+INSERT INTO users (username, password, role) VALUES ('user', '$2a$10$Hz0RZhwnBG8KNUka9iitX.ovm/S4UfgYpE7tuv9wxlBYN6riEbe6q', 'USER');
+INSERT INTO users (username, password, role) VALUES ('1', '$2a$10$B/P7AJtZwwrFW2PFUQv33.sbgPSt7k4tyaMBI.eWhvtD6qtN2gYaG', 'ADMIN');
 
 -- Вставка тестовых данных в таблицу subscriptions
 INSERT INTO subscriptions (name, category, followers) VALUES ('Ninja', 'Gaming', 18000000);

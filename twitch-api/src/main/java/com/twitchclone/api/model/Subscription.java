@@ -1,5 +1,8 @@
 package com.twitchclone.api.model;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -7,9 +10,10 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
+@Data
+@EqualsAndHashCode(callSuper = true)
 @Table(name = "subscriptions")
 public class Subscription extends AbstractModels {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -27,35 +31,8 @@ public class Subscription extends AbstractModels {
         this.followers = followers;
     }
 
+    @Override
     public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
-    public int getFollowers() {
-        return followers;
-    }
-
-    public void setFollowers(int followers) {
-        this.followers = followers;
+        return super.getId(); // или просто return id; если id определен в классе Subscription
     }
 }
