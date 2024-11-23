@@ -15,11 +15,12 @@ public class CustomUserDetailsService implements UserDetailsService {
     private UserRepository dao;
 
     @Override
-    public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
-        User user = dao.findByLogin(userName).orElseThrow(() -> new UsernameNotFoundException("Unknown user: " + userName));
-        
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = dao.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("Unknown user: " + username));
+
         UserDetails userDetails = org.springframework.security.core.userdetails.User.builder()
-                .username(user.getUsername())
+                .username(user.getUsername()) 
                 .password(user.getPassword())
                 .roles(user.getRole())
                 .build();

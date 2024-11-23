@@ -18,7 +18,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User create(User user) {
-        if (userRepository.existsByLogin(user.getLogin())) {
+        if (userRepository.existsByUsername(user.getUsername())) {
             throw new RuntimeException("Пользователь с таким именем уже существует");
         }
         return userRepository.save(user);
@@ -45,14 +45,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User findByLogin(String login) {
-        return userRepository.findByLogin(login).orElseThrow(() 
-        -> new UsernameNotFoundException("Пользователь не найден"));
+    public User findByUsername(String username) {
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("Пользователь не найден"));
     }
 
     @Override
     public User getCurrentUser() {
-        var login = SecurityContextHolder.getContext().getAuthentication().getName();
-        return findByLogin(login);
+        var username = SecurityContextHolder.getContext().getAuthentication().getName();
+        return findByUsername(username);
     }
 }

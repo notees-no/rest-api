@@ -1,6 +1,7 @@
 package com.twitchclone.api.security;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,52 +23,67 @@ public class JWTUtil {
     @Value("${jwt.sessionTime}")
     private long sessionTime;
 
-    // генерация токена (кладем в него имя пользователя и authorities)
+    // Генерация токена (кладем в него имя пользователя и authorities)
     public String generateToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
-        String commaSeparatedListOfAuthorities=  userDetails.getAuthorities().stream().map(a->a.getAuthority()).collect(Collectors.joining(","));
+        String commaSeparatedListOfAuthorities = userDetails.getAuthorities().stream()
+                .map(a -> a.getAuthority())
+                .collect(Collectors.joining(","));
         claims.put("authorities", commaSeparatedListOfAuthorities);
         return createToken(claims, userDetails.getUsername());
     }
 
-    //извлечение имени пользователя из токена (внутри валидация токена)
+    // Создание токена
+    @SuppressWarnings("deprecation")
+    private String createToken(Map<String, Object> claims, String subject) {
+        return Jwts.builder()
+                .setClaims(claims)
+                .setSubject(subject)
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + sessionTime))
+                .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
+                .compact();
+    }
+
+    // Извлечение имени пользователя из токена (внутри валидация токена)
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
     }
 
-    //извлечение authorities (внутри валидация токена)
+    // Извлечение authorities (внутри валидация токена)
     public String extractAuthorities(String token) {
-        Function<Claims, String> claimsListFunction = claims -> {
-            return (String)claims.get("authorities");
-        };
-        return extractClaim(token, claimsListFunction);
+        return extractClaim(token, claims -> (String) claims.get("authorities"));
     }
 
+    // Валидация токена
+    public boolean validateToken(String token, UserDetails userDetails) {
+        final String username = extractUsername(token);
+        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+    }
 
+    // Проверка на истечение токена
+    private boolean isTokenExpired(String token) {
+        try {
+            return extractExpiration(token).before(new Date());
+        } catch (ExpiredJwtException e) {
+            return true;
+        }
+    }
 
-    private  <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
+    // Извлечение даты истечения токена
+    private Date extractExpiration(String token) {
+        return extractClaim(token, Claims::getExpiration);
+    }
+
+    // Извлечение данных из токена
+    private <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
         final Claims claims = extractAllClaims(token);
         return claimsResolver.apply(claims);
     }
 
+    // Извлечение всех данных из токена
     @SuppressWarnings("deprecation")
     private Claims extractAllClaims(String token) {
         return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody();
-    }
-
-
-    @SuppressWarnings("deprecation")
-    private String createToken(Map<String, Object> claims, String subject) {
-
-        return Jwts.builder().setClaims(claims)
-                .setSubject(subject)
-                .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(expireTimeFromNow())
-                .signWith(SignatureAlgorithm.HS256, SECRET_KEY).compact();
-    }
-
-
-    private Date expireTimeFromNow() {
-        return new Date(System.currentTimeMillis() + sessionTime);
     }
 }
