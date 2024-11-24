@@ -18,7 +18,6 @@ CREATE TABLE IF NOT EXISTS users (
     username VARCHAR(100) NOT NULL,
     password VARCHAR(255) NOT NULL,
     role ENUM('GUEST', 'USER', 'ADMIN') NOT NULL,
-    position VARCHAR(255),
     PRIMARY KEY (id),
     UNIQUE KEY username_UNIQUE (username)
 );
@@ -36,40 +35,28 @@ CREATE TABLE IF NOT EXISTS subscriptions (
 INSERT INTO
     users (username, password, role)
 VALUES
-    ('admin', '123', 'ADMIN');
-
-INSERT INTO
-    users (username, password, role)
-VALUES
-    ('user', '123', 'USER');
-
-INSERT INTO
-    users (username, password, role)
-VALUES
-    ('1', '1', 'ADMIN');
+    (
+        'admin',
+        '$2a$10$NDUZ6ePTr9xl1Y9Ruy0ezuYl5mK9bQx4bmUdGnV4hxZygZ1c8vJj2',
+        'ADMIN'
+    ),
+    (
+        'user',
+        '$2a$10$yCldbrIaAhrbWZfo5b5UUus2ri56KAiTc6vmX8BcdKAO7V.Y5yl2m',
+        'USER'
+    ),
+    (
+        '1',
+        '$2a$10$SPXrp58h18hsByCuq9W8kOWUPdX.OSuRziXfZB.QvOMCwhJ1iqVtC',
+        'ADMIN'
+    );
 
 -- Вставка тестовых данных в таблицу subscriptions
 INSERT INTO
     subscriptions (name, category, followers)
 VALUES
-    ('Ninja', 'Gaming', 18000000);
-
-INSERT INTO
-    subscriptions (name, category, followers)
-VALUES
-    ('Pokimane', 'Just Chatting', 9000000);
-
-INSERT INTO
-    subscriptions (name, category, followers)
-VALUES
-    ('Shroud', 'FPS', 10000000);
-
-INSERT INTO
-    subscriptions (name, category, followers)
-VALUES
-    ('IRL_Explorer', 'IRL', 500000);
-
-INSERT INTO
-    subscriptions (name, category, followers)
-VALUES
+    ('Ninja', 'Gaming', 18000000),
+    ('Pokimane', 'Just Chatting', 9000000),
+    ('Shroud', 'FPS', 10000000),
+    ('IRL_Explorer', 'IRL', 500000),
     ('CookingMaster', 'Food & Drink', 2000000);

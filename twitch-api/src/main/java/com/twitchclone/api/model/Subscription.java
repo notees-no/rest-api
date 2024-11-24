@@ -11,9 +11,9 @@ import jakarta.persistence.Table;
 
 @Entity
 @Data
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode
 @Table(name = "subscriptions")
-public class Subscription extends AbstractModels {
+public class Subscription {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -29,10 +29,5 @@ public class Subscription extends AbstractModels {
         this.name = name;
         this.category = category;
         this.followers = followers;
-    }
-
-    @Override
-    public Long getId() {
-        return super.getId(); // или просто return id; если id определен в классе Subscription
     }
 }

@@ -11,19 +11,14 @@ import jakarta.persistence.Table;
 
 @Entity
 @Data
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode
 @Table(name = "users")
-public class User extends AbstractModels {
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    long id;
+    private Long id;
+
     private String username;
     private String password;
-    private String position;
     private String role;
-
-    @Override
-    public Long getId() {
-        return super.getId();
-    }
 }
